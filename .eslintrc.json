@@ -26,6 +26,5 @@
       "code": 250
     }
   ]
-  },
-  "ignorePatterns": ["ecosystem.config.js"]
+  }
 }
