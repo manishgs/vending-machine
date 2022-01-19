@@ -1,11 +1,12 @@
 import { NextFunction, Request, Response } from 'express';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const errorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
   const status = err.status || 500;
   const message = err.message || (err.errors && err.errors[0].message) || 'Internal Server Error';
   if (status === 500) {
     const { ip, hostname, originalUrl } = req;
-    const requestData:any = {
+    const requestData: any = {
       stack: err.stack,
       status: err.status,
       ip,
