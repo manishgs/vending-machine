@@ -7,6 +7,7 @@ const app: Application = express();
 
 const App = () => {
   try {
+    app.use(express.json());
     app.use(Router);
     app.use(errorHandler);
     app.use('*', (req, res) => {
