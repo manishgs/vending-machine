@@ -1,0 +1,103 @@
+cost of items   and stock
+coke : 20   10
+pepsi: 25   10
+dew : 30    10
+
+initial amount of coins  = 100;
+
+actions
+- purchase  
+- refund 
+
+if currency enter is less than cost of items do nothing
+
+consider cases 
+ - out of product
+ - out of coins
+
+
+UI 
+
+
+Buy   
+-----------
+Choose items 
+coke  |  pepsi  | Dew 
+20       25       30
+
+Enter coin
+[      XXX        ]
+[Buy]
+
+
+Refund
+-----------
+Choose items
+coke  |  pepsi  | Dew 
+20       25       30
+
+[Refund]
+
+
+
+API
+
+GET / products [{
+    id:
+    name: 
+    price:
+    stock: 
+}]
+
+POST /purchase {
+        item_id : id
+        amount : customerPay    
+} 
+response {
+    transaction : {
+        id : XXXX
+        date : XXXX
+        amount : item cost
+        return : customerPay - item cost
+    }
+    message : 'sucess'
+    status : 'OK' 
+}
+
+POST /refund {
+    item_id: id 
+}
+response {
+    transaction : {
+        id :XXX
+        date: XXX
+        amount: items cost
+        return: items cost  
+    },
+    status : 'OK'
+}
+
+Databse 
+products : 
+   id  name  amount  stock
+   1   coke   25      10  = inventory total - transactions.qty sum
+
+transactions
+    id   type  (buy | refund)  item     qty  price     paid  return   total   createdAt
+    xxx   buy                   coke     1     25        100    75      25    XXX
+    xxx   refund                coke     1     25         0     25     -25
+
+
+balance
+  id    type      amount   
+  xxx    deposit   1000
+  xxx    windraw   -50     
+
+getBalance
+   sum of balance - transaction sum (paid - return)
+
+
+asumption
+1. there is no inventory in/out history
+2. 
+

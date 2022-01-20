@@ -5,7 +5,7 @@
         "inlineSources": true,
         "sourceRoot": "/"
     },
-    "exclude": [
-        "tests/**/*.test.ts",
+    "include": [
+        "server/**/*.ts",
     ]
   }
