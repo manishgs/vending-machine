@@ -1,15 +1,21 @@
-import { VendingMachineInstance } from './type';
+import { VendingMachineInstance, VendingMachineStatus } from './type';
 import VendingMachineList from './data.json';
 
 class VendingMachine {
-  async findById(id: number): Promise<VendingMachineInstance | undefined> {
-    return (await this.find()).find((vendingMachine: VendingMachineInstance) => vendingMachine.id === id);
-  }
-
   find(): Promise<VendingMachineInstance[]> {
     return new Promise((resolve) => {
       resolve(VendingMachineList as VendingMachineInstance[]);
     });
+  }
+
+  async verifyToken(token: string): Promise<VendingMachineInstance | null> {
+    const machines = await this.find();
+    for (const machine of machines) {
+      if (token === machine.token && machine.status === VendingMachineStatus.Available) {
+        return machine;
+      }
+    }
+    return null;
   }
 }
 
