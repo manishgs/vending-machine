@@ -2,6 +2,7 @@
     {
         "id": 1,
         "name": "Vending Machine 1",
-        "status": "Available"
+        "status": "Available",
+        "token": "123456789"
     }
 ]

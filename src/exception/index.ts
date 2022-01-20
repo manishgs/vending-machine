@@ -37,3 +37,10 @@ export class ValidationException extends HttpException {
     Object.setPrototypeOf(this, ValidationException.prototype);
   }
 }
+
+export class UnauthorizedException extends HttpException {
+  constructor(message: string = 'Unauthorized') {
+    super(message, 401);
+    Object.setPrototypeOf(this, UnauthorizedException.prototype);
+  }
+}

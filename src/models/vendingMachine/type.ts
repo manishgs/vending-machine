@@ -7,4 +7,5 @@ export interface VendingMachineInstance {
   id: number;
   name: string;
   status: VendingMachineStatus
+  token: string;
 }

@@ -2,7 +2,6 @@ import { BadRequestException, ValidationException } from '../../exception';
 import ProductService from '../product';
 import { PurchaseData, RefundData, TransactionType } from '../../models/transaction/type';
 import Transaction from '../../models/transaction';
-import VendingMachine from '../../models/vendingMachine';
 import Balance from '../../models/balance';
 
 class TransactionService {
@@ -13,13 +12,6 @@ class TransactionService {
       throw new BadRequestException('Product not found');
     }
 
-    // Check if vending machine is available
-    const machine = await VendingMachine.findById(data.vendingMachineId);
-
-    // Check if product quantity is enough
-    if (!machine) {
-      throw new BadRequestException('Invalid Vending Machine');
-    }
     return product;
   }
 
