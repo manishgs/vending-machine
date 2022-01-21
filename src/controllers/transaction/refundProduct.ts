@@ -1,16 +1,16 @@
 import { NextFunction } from 'connect';
 import { Response, Request } from 'express';
-import { RefundData } from '../../models/transaction/type';
+import { RefundData } from '../../models/transaction/types';
 import { BadRequestException } from '../../exception';
 import Transaction from '../../services/transaction';
 
 const validateRequest = (req: Request): RefundData => {
-  const { productId, vendingMachineId } = req.body;
+  const { productId } = req.body;
   if (!productId) {
     throw new BadRequestException('Invalid request');
   }
 
-  return { productId, quantity: 1, vendingMachineId };
+  return { productId, quantity: 1, vendingMachineId: req.machine.id };
 };
 
 export const refundProduct = async (req: Request, res: Response, next: NextFunction) => {

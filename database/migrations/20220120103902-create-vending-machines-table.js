@@ -9,9 +9,17 @@ module.exports = {
       },
       name: {
         allowNull: false,
+        type: Sequelize.STRING,
+      },
+      status: {
+        allowNull: false,
+        type: Sequelize.STRING,
+      },
+      amount: {
+        allowNull: false,
         type: Sequelize.INTEGER,
       },
-      authKey: {
+      token: {
         allowNull: false,
         type: Sequelize.STRING,
       },

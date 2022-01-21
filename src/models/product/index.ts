@@ -1,32 +1,42 @@
-import fs from 'fs';
-import path from 'path';
-import { ProductInstance } from './type';
-import ProductList from './data.json';
+import { DataTypes, Model } from 'sequelize';
+import sequelize from '../../bootstrap/sequelize';
+import { ProductAttributes, ProductCreationAttributes, ProductDTO } from './types';
 
-class Product {
-  async findById(id: number): Promise<ProductInstance | undefined> {
-    return (await this.find()).find((product: ProductInstance) => product.id === id);
-  }
+class Product extends Model<ProductAttributes, ProductCreationAttributes> implements ProductAttributes {
+  declare id: ProductAttributes['id'];
 
-  find(): Promise<ProductInstance[]> {
-    return new Promise((resolve) => {
-      resolve(ProductList);
-    });
-  }
+  declare name: ProductAttributes['name'];
 
-  async updateQuantity(id: number, quantity: number): Promise<ProductInstance | null> {
-    const products = await this.find();
+  declare price: ProductAttributes['price'];
 
-    for (const product of products) {
-      if (product.id === id) {
-        product.quantity = quantity;
-        fs.writeFileSync(path.resolve(__dirname, './data.json'), JSON.stringify(products));
-        return product;
-      }
-    }
+  declare VendingMachineProduct: any;
 
-    return null;
+  public toDTO(): ProductDTO {
+    return {
+      id: this.id,
+      name: this.name,
+      price: this.price,
+    };
   }
 }
 
-export default new Product();
+Product.init({
+  id: {
+    primaryKey: true,
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+  },
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  price: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+}, {
+  sequelize,
+  tableName: 'products',
+});
+
+export default Product;
