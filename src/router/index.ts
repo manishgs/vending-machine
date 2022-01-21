@@ -1,32 +1,12 @@
 import express from 'express';
-import VendingMachine from '../models/vendingMachine';
-import { BadRequestException, UnauthorizedException } from '../exception';
+import tokenMiddleware from '../bootstrap/tokenMiddleware';
 import { getProducts } from '../controllers/product';
 import { purchaseProduct, refundProduct } from '../controllers/transaction';
-import Balance from '../models/balance';
+import { getBalance } from '../controllers/vendingMachine';
 
 const app = express();
 
-app.use(async (req, res, next) => {
-  let token: string = String(req.headers['x-access-token'] || req.headers.authorization || req.headers.token || '');
-  try {
-    if (!token) {
-      throw new BadRequestException('Token not found');
-    }
-
-    token = token.replace('Bearer ', '');
-
-    const machine = await VendingMachine.verifyToken(token);
-    if (!machine) {
-      throw new UnauthorizedException('Token is not valid');
-    }
-
-    res.locals.machine = machine;
-    next();
-  } catch (e) {
-    next(e);
-  }
-});
+app.use(tokenMiddleware);
 
 app.get('/products', getProducts);
 
@@ -34,9 +14,6 @@ app.post('/purchase', purchaseProduct);
 
 app.post('/refund', refundProduct);
 
-app.get('/balance', async (req, res) => {
-  const balance = await Balance.get();
-  res.json({ data: { balance }, status: 'OK' });
-});
+app.get('/balance', getBalance);
 
 export default app;
