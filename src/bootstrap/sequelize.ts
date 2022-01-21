@@ -1,17 +1,28 @@
-import { Sequelize } from 'sequelize';
+import { Options, Sequelize } from 'sequelize';
+import { APP_ENV } from 'src/config';
+
 import {
   DB_HOST, DB_NAME, DB_PASSWORD, DB_USERNAME,
 } from '../config';
 
-const sequelize = new Sequelize(
-  DB_NAME,
-  DB_USERNAME,
-  DB_PASSWORD,
-  {
+let options: Options;
+
+if (APP_ENV === 'test') {
+  options = {
+    dialect: 'sqlite',
+    storage: './db/db.sqlite3',
+  };
+} else {
+  options = {
     host: DB_HOST,
+    database: DB_NAME,
+    username: DB_USERNAME,
+    password: DB_PASSWORD,
     dialect: 'postgres',
     logging: false,
-  },
-);
+  };
+}
+
+const sequelize = new Sequelize(options);
 
 export default sequelize;
