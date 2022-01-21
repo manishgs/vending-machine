@@ -41,3 +41,35 @@ Run linter before you commit changes.
 ```
 yarn lint
 ```
+
+## API EndPoint
+
+```
+GET /api/products
+Authorization: Bearer XXX
+```
+```
+GET /api/balance
+Authorization: Bearer XXX
+```
+```
+POST /api/purchase
+Content-Type: application/json
+Authorization: Bearer XXX
+
+{
+    "productId": xxx , 
+    "amount": xxx
+}
+
+```
+
+```
+POST /api/refund
+Content-Type: application/json
+Authorization: Bearer XXXX
+
+{
+    "productId":xxx 
+}
+```
