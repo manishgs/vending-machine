@@ -6,6 +6,10 @@ class ProductRepository extends BaseRepository<ProductAttributes, ProductCreatio
   constructor() {
     super(Product);
   }
+
+  findById(id: number): Promise<Product | null> {
+    return this.findOne({ where: { id } });
+  }
 }
 
 export default new ProductRepository();

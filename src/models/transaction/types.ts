@@ -1,6 +1,6 @@
 import { Optional } from 'sequelize';
 import { AmountMap } from 'src/libs/amount/types';
-import Amount from '../../libs/amount/amount';
+import Amount from '../../libs/amount';
 import VendingMachine from '../vendingMachine';
 
 export interface PurchaseData {

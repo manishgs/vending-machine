@@ -1,5 +1,5 @@
 import Product from '../../models/product';
-import Amount from '../amount/amount';
+import Amount from '../amount';
 import VendingMachine from '../../models/vendingMachine';
 import { AmountMap } from '../amount/types';
 
@@ -35,20 +35,22 @@ class PurchaseTransaction {
     const vmAmount = this.vendingMachineAmount.toMap();
     const reAmount = this.receivedAmount.toMap();
     for (const key of Object.keys(reAmount)) {
+      if (!vmAmount[key]) vmAmount[key] = 0;
       vmAmount[key] += reAmount[key];
     }
     return new Amount(vmAmount);
   }
 
   isEnoughbalanceToReturn(): boolean {
-    if (this.returnAmount().total() < this.availableAmount().total()) {
-      return this.returnAmount().total() > 0;
-    }
-    return false;
+    return this.returnAmount().total() === 0 || this.returnAmount().total() < this.availableAmount().total();
   }
 
   returnAmount(): Amount {
     let totalReturnAmount = this.receivedAmount.total() - this.product.price;
+    if (totalReturnAmount < 1) {
+      return new Amount({});
+    }
+
     let returnMap: AmountMap = {};
     const vmAmount = this.availableAmount().toMap();
     for (const key of this.availableAmount().denominations()) {
@@ -70,11 +72,18 @@ class PurchaseTransaction {
   }
 
   vmAmount(): Amount {
+    if (this.returnAmount().total() < 1) {
+      return new Amount(this.availableAmount().toMap());
+    }
+
     const returnAmount = this.returnAmount().toMap();
     const vmAmount = this.availableAmount().toMap();
     for (const key of this.availableAmount().denominations()) {
       const amount = parseInt(key, 10);
       vmAmount[amount] -= returnAmount[amount];
+      if (vmAmount[amount] < 1) {
+        delete vmAmount[amount];
+      }
     }
     return new Amount(vmAmount);
   }
