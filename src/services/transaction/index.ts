@@ -1,19 +1,26 @@
+import PurchaseTransaction from '../../libs/transaction/purchase';
+import RefundTransaction from '../../libs/transaction/refund';
 import VendingMachineProduct from '../../models/vendingMachineProduct';
 import { BadRequestException, HttpException, ValidationException } from '../../exception';
 import ProductService from '../product';
 import { PurchaseData, RefundData, TransactionType } from '../../models/transaction/types';
-import Transaction from '../../repository/transaction';
+import TransactionRepository from '../../repository/transaction';
 import VendingService from '../vendingMachine';
 import Sequelize from '../../bootstrap/sequelize';
 
 class TransactionService {
-  protected transaction = Transaction;
+  protected transaction = TransactionRepository;
 
   async validateRequest(data: PurchaseData | RefundData) {
-    const product = await ProductService.findByIdAndVendingMachine(data.productId, data.vendingMachineId);
+    const product = await ProductService.getWithQuantity(data.productId, data.vendingMachine.id);
     // Check if product is available
     if (!product) {
       throw new BadRequestException('Product not found');
+    }
+
+    // check if product quantity is enough
+    if (product.quantity < data.quantity) {
+      throw new BadRequestException('Product quantity is not enough');
     }
 
     return product;
@@ -21,43 +28,36 @@ class TransactionService {
 
   async purchase(data: PurchaseData) {
     const product = await this.validateRequest(data);
-
-    // check if product quantity is enough
-    if (product.quantity < data.quantity) {
-      throw new BadRequestException('Product quantity is not enough');
-    }
+    const transaction = new PurchaseTransaction(product, data.amount, data.vendingMachine);
 
     // if amount is enough
-    if (data.amount < product.price) {
+    if (!transaction.isAmountEnough()) {
       throw new ValidationException('Not enough amount');
     }
 
-    const returnAmount = data.amount - product.price;
-
-    const balance = await VendingService.getBalance(data.vendingMachineId);
     // check if we have enough balance to return
-    if (returnAmount > (balance + data.amount)) {
+    if (!transaction.isEnoughbalanceToReturn()) {
       throw new ValidationException('Not enough balance');
     }
 
     const result = await Sequelize.transaction(async (t) => {
       try {
-        const transaction = await this.transaction.create({
-          vendingMachineId: data.vendingMachineId,
+        const txn = await this.transaction.create({
+          vendingMachineId: data.vendingMachine.id,
           productId: data.productId,
           price: product.price,
           quantity: data.quantity,
-          receive: data.amount,
+          receive: transaction.recievedMap(),
           type: TransactionType.BUY,
-          return: returnAmount,
+          return: transaction.returnAmount().toMap(),
         });
 
         // deduct product quantity
-        if (transaction) {
-          await VendingMachineProduct.update({ quantity: product.quantity - data.quantity }, { where: { productId: data.productId, vendingMachineId: data.vendingMachineId } });
-          await VendingService.updateBalance(data.vendingMachineId, balance + product.price);
+        if (txn) {
+          await VendingMachineProduct.update({ quantity: product.quantity - data.quantity }, { where: { productId: data.productId, vendingMachineId: data.vendingMachine.id } });
+          await VendingService.updateBalance(data.vendingMachine.id, transaction.vmAmount().toMap());
         }
-        return transaction;
+        return txn;
       } catch (e: any) {
         t.rollback();
         console.log(e.message);
@@ -69,34 +69,32 @@ class TransactionService {
 
   async refund(data: RefundData) {
     const product = await this.validateRequest(data);
+    const transaction = new RefundTransaction(product, data.vendingMachine);
 
-    const returnAmount = product.price;
-
-    const balance = await VendingService.getBalance(data.vendingMachineId);
     // check if we have enough balance to return
-    if (returnAmount > balance) {
+    if (!transaction.isEnoughbalanceToReturn()) {
       throw new ValidationException('Not enough balance');
     }
 
     const result = await Sequelize.transaction(async (t) => {
       try {
-        const transaction = await this.transaction.create({
-          vendingMachineId: data.vendingMachineId,
+        const txn = await this.transaction.create({
+          vendingMachineId: data.vendingMachine.id,
           productId: data.productId,
           price: product.price,
           quantity: data.quantity,
-          receive: 0,
+          receive: {},
           type: TransactionType.REFUND,
-          return: product.price,
+          return: transaction.returnAmount().toMap(),
         });
 
         // deduct product quantity
         if (transaction) {
-          await VendingMachineProduct.update({ quantity: product.quantity + data.quantity }, { where: { productId: data.productId, vendingMachineId: data.vendingMachineId } });
-          await VendingService.updateBalance(data.vendingMachineId, balance - product.price);
+          await VendingMachineProduct.update({ quantity: product.quantity + data.quantity }, { where: { productId: data.productId, vendingMachineId: data.vendingMachine.id } });
+          await VendingService.updateBalance(data.vendingMachine.id, transaction.vmAmount().toMap());
         }
 
-        return transaction;
+        return txn;
       } catch (e: any) {
         t.rollback();
         console.log(e.message);

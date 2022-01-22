@@ -1,14 +1,17 @@
 import { Optional } from 'sequelize';
+import { AmountMap } from 'src/libs/amount/types';
+import Amount from '../../libs/amount/amount';
+import VendingMachine from '../vendingMachine';
 
 export interface PurchaseData {
-  vendingMachineId: number;
+  vendingMachine: VendingMachine;
   productId: number;
   quantity: number;
-  amount: number;
+  amount: Amount;
 }
 
 export interface RefundData {
-  vendingMachineId: number;
+  vendingMachine: VendingMachine;
   productId: number;
   quantity: number;
 }
@@ -23,9 +26,9 @@ export interface TransactionFillable {
   productId: number;
   price: number;
   quantity: number;
-  receive: number;
+  receive: AmountMap;
   type: TransactionType;
-  return: number;
+  return: AmountMap;
 }
 
 export interface TransactionAttributes extends TransactionFillable {

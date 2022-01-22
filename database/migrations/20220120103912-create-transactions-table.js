@@ -25,11 +25,11 @@ module.exports = {
       },
       receive: {
         allowNull: false,
-        type: Sequelize.FLOAT,
+        type: Sequelize.JSONB,
       },
       return: {
         allowNull: false,
-        type: Sequelize.FLOAT,
+        type: Sequelize.JSONB,
       },
       type:{
         allowNull: false,

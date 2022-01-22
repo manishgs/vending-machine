@@ -1,5 +1,5 @@
-export const isAmount = (val: string | number) => {
-  const amount = Number(val);
+export const isAmount = (val: string) => {
+  const amount = parseInt(val, 10);
   // not a number
   if (Number.isNaN(amount)) return false;
   // decimal

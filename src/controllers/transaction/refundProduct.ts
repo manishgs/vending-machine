@@ -10,7 +10,7 @@ const validateRequest = (req: Request): RefundData => {
     throw new BadRequestException('Invalid request');
   }
 
-  return { productId, quantity: 1, vendingMachineId: req.machine.id };
+  return { productId, quantity: 1, vendingMachine: req.machine };
 };
 
 export const refundProduct = async (req: Request, res: Response, next: NextFunction) => {

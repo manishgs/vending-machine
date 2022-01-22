@@ -1,8 +1,6 @@
 import { Options, Sequelize } from 'sequelize';
-import { APP_ENV } from 'src/config';
-
 import {
-  DB_HOST, DB_NAME, DB_PASSWORD, DB_USERNAME,
+  APP_ENV, DB_HOST, DB_NAME, DB_PASSWORD, DB_USERNAME,
 } from '../config';
 
 let options: Options;

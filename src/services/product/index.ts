@@ -13,18 +13,13 @@ class ProductService {
     return this.product.findOne({ where: { id } });
   }
 
-  async findByIdAndVendingMachine(productId: number, vendingMachineId: number): Promise<VendingMachineProduct | null> {
-    const data = await VendingMachineProduct.findOne({
-      where: { productId, vendingMachineId },
-      include: [{
-        model: Product,
-        as: 'product',
-      }],
-    });
-    if (data) {
-      data.price = data.product.price;
+  async getWithQuantity(productId: number, vendingMachineId: number): Promise<Product | null> {
+    const [product, vendingMachineProduct] = await Promise.all([this.product.findOne({ where: { id: productId } }), VendingMachineProduct.findOne({ where: { productId, vendingMachineId } })]);
+
+    if (product && vendingMachineProduct) {
+      product.quantity = vendingMachineProduct.quantity;
     }
-    return data;
+    return product;
   }
 
   updateQuantity(productId: number, vendingMachineId: number, quantity: number) {

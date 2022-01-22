@@ -17,7 +17,7 @@ module.exports = {
       },
       amount: {
         allowNull: false,
-        type: Sequelize.INTEGER,
+        type: Sequelize.JSONB,
       },
       token: {
         allowNull: false,

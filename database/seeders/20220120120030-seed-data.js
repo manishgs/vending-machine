@@ -21,8 +21,8 @@ module.exports = {
     ]);
 
    await queryInterface.bulkInsert('vending_machines', [{
-      name: 'drink machine',
-      amount:100,
+      name: 'drinks machine',
+      amount:JSON.stringify({'1':100}),
       token:'123456789',
       status:'ACTIVE',
       createdAt: new Date(),
