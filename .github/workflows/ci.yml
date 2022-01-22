@@ -1,4 +1,4 @@
-name: test
+name: Test
 on:
   push:
     branches:
@@ -33,10 +33,10 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Run migration
+      - name: Run migration --env test
         run: npm run migrate
 
-      - name: Run seed
+      - name: Run seed --env test
         run: npm run seed
 
       - name: Test
