@@ -1,0 +1,21 @@
+version: '2'
+services:
+  api:
+    build:
+      context: ./
+      target: dev # dev or production
+    volumes:
+      - .:/src
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: development # test or production or development
+  postgresql:
+    image: 'bitnami/postgresql:latest'
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db/postgresql:/bitnami/postgresql
+    environment:
+      - POSTGRESQL_USERNAME=root
+      - POSTGRESQL_PASSWORD=password
