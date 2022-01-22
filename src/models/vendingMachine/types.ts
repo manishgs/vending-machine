@@ -1,4 +1,5 @@
 import { Optional } from 'sequelize';
+import { AmountMap } from 'src/libs/amount/types';
 
 export enum VendingMachineStatus {
   ACTIVE = 'ACTIVE',
@@ -8,7 +9,7 @@ export interface VendingMachineFillable {
   name: string;
   status: VendingMachineStatus
   token: string;
-  amount: number;
+  amount: AmountMap;
 }
 export interface VendingMachineAttributes extends VendingMachineFillable {
   id: number;

@@ -53,11 +53,11 @@ Transaction.init({
     allowNull: false,
   },
   receive: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.JSONB,
     allowNull: false,
   },
   return: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.JSONB,
     allowNull: false,
   },
   price: {

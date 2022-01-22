@@ -1,4 +1,5 @@
-import { ProductDTO } from 'src/models/product/types';
+import { AmountMap } from '../../libs/amount/types';
+import { ProductDTO } from '../../models/product/types';
 import Product from '../../models/product';
 import { HttpException } from '../../exception';
 import VendingMachineRepository from '../../repository/vendingMachine';
@@ -6,7 +7,7 @@ import VendingMachineRepository from '../../repository/vendingMachine';
 class VendingMachineService {
   protected vendingMachine = VendingMachineRepository;
 
-  async getBalance(id: number): Promise<number> {
+  async getBalance(id: number): Promise<AmountMap> {
     const vendingMachine = await this.vendingMachine.findOne({ where: { id } });
     if (!vendingMachine) {
       throw new HttpException('vendingMachine not found');
@@ -37,7 +38,7 @@ class VendingMachineService {
     return res;
   }
 
-  updateBalance(vendingMachineId: number, amount: number) {
+  updateBalance(vendingMachineId: number, amount: AmountMap) {
     return this.vendingMachine.update({ amount }, { where: { id: vendingMachineId } });
   }
 }

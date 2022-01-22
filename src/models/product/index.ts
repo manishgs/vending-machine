@@ -9,6 +9,8 @@ class Product extends Model<ProductAttributes, ProductCreationAttributes> implem
 
   declare price: ProductAttributes['price'];
 
+  declare quantity: number;
+
   declare VendingMachineProduct: any;
 
   public toDTO(): ProductDTO {
