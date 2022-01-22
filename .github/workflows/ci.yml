@@ -34,10 +34,10 @@ jobs:
         run: npm run build
 
       - name: Run migration
-        run: npm run migrate --env=test
+        run: npm run migrate 
 
       - name: Run seed
-        run: npm run seed --env=test
+        run: npm run seed 
 
       - name: Test
         run: npm run test
