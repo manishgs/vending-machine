@@ -5,7 +5,8 @@
   },
   "extends": [
       "airbnb-base",
-      "airbnb-typescript/base"
+      "airbnb-typescript/base",
+      "plugin:@next/next/recommended"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -17,6 +18,7 @@
       "@typescript-eslint"
   ],
   "rules": {
+    "import/extensions": "off",
       "import/prefer-default-export": "off",
       "no-restricted-syntax": "off",
       "class-methods-use-this": "off",

@@ -3,9 +3,15 @@
     "compilerOptions": {
         "sourceMap": true,
         "inlineSources": true,
-        "sourceRoot": "/"
+        "sourceRoot": "/",
+        "allowJs": false,
+        "incremental": false,
+        "isolatedModules": false,
+        "noEmit": false
     },
     "exclude": [
         "tests/**/*.test.ts",
+        "pages/**/*.tsx",
+        "components/**/*.tsx"
     ]
-  }
+}
