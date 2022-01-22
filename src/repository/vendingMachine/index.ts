@@ -6,6 +6,10 @@ class VendingMachineRepository extends BaseRepository<VendingMachineAttributes, 
   constructor() {
     super(VendingMachine);
   }
+
+  findById(id: number): Promise<VendingMachine | null> {
+    return this.findOne({ where: { id } });
+  }
 }
 
 export default new VendingMachineRepository();
