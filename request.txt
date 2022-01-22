@@ -1,0 +1,27 @@
+GET http://localhost:3000/api/products
+Authorization: Bearer 123456789
+
+###
+GET http://localhost:3000/api/balance
+Authorization: Bearer 123456789
+
+###
+POST http://localhost:3000/api/purchase
+Content-Type: application/json
+Authorization: Bearer 123456789
+
+{
+    "productId": 1 , 
+    "amount": {
+        "1":10000
+    }
+}
+
+###
+POST http://localhost:3000/api/refund
+Content-Type: application/json
+Authorization: Bearer 123456789
+
+{
+    "productId":1 
+}
