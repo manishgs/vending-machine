@@ -9,7 +9,7 @@ import sequelize from './bootstrap/sequelize';
 
 const app = next({ dev: process.env.NODE_ENV !== 'production' });
 const handle = app.getRequestHandler();
-const port = Number(APP_PORT || 3000);
+const port = Number(process.env.PORT || 5000);
 const server = express();
 
 app.prepare().then(async () => {
