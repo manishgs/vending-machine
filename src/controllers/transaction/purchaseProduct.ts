@@ -1,6 +1,6 @@
 import { NextFunction } from 'connect';
 import { Response, Request } from 'express';
-import Amount from '../../libs/amount/amount';
+import Amount from '../../libs/amount';
 import { Denomination } from '../../libs/amount/types';
 import { BadRequestException } from '../../exception';
 import { PurchaseData } from '../../models/transaction/types';

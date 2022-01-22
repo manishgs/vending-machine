@@ -1,5 +1,5 @@
 import Product from '../../models/product';
-import Amount from '../amount/amount';
+import Amount from '../amount';
 import VendingMachine from '../../models/vendingMachine';
 import { AmountMap } from '../amount/types';
 

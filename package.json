@@ -11,7 +11,8 @@
     "migrate:undo": "sequelize db:migrate:undo",
     "migrate:undo:all": "sequelize db:migrate:undo:all",
     "seed": "sequelize db:seed:all",
-    "seed:undo": "sequelize db:seed:undo"
+    "seed:undo": "sequelize db:seed:undo",
+    "test": "NODE_ENV=test mocha -r ts-node/register -r tsconfig-paths/register tests/**/*.test.ts --bail --exit --timeout 10000"
   },
   "repository": {
     "type": "git",
@@ -32,12 +33,16 @@
     "sequelize-cli": "^6.4.1"
   },
   "devDependencies": {
+    "@types/chai": "^4.3.0",
     "@types/express": "^4.17.13",
+    "@types/mocha": "^9.1.0",
     "@typescript-eslint/eslint-plugin": "^5.10.0",
     "@typescript-eslint/parser": "^5.10.0",
+    "chai": "^4.3.4",
     "eslint": "^8.7.0",
     "eslint-config-airbnb-typescript": "^16.1.0",
     "eslint-plugin-import": "^2.25.4",
+    "mocha": "^9.1.4",
     "nodemon": "^2.0.15",
     "sqlite3": "^5.0.2",
     "ts-node": "^10.4.0",
