@@ -1,0 +1,43 @@
+name: test
+on:
+  pull_request:
+    branches:
+      - main
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+        
+      - name: Set up nodejs version 16
+        uses: actions/setup-node@v2.4.0
+        with:
+          node-version: 16
+
+      - name: Setup environment variables
+        shell: bash
+        run: |
+          echo 'APP_ENV=test' > .env
+
+      - name: Install package
+        run: npm install
+
+      - name: Linter
+        run:  npm run lint
+
+      - name: Build
+        run: npm run build
+
+      - name: Run migration
+        run: npm run migrate
+
+      - name: Run seed
+        run: npm run seed
+
+      - name: Test
+        run: npm run test
