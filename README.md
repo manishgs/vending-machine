@@ -12,6 +12,11 @@ cd vending-machine
 yarn install
 ```
 
+### update env variables
+```
+cp .env.example .env
+```
+
 ### Run
 
 
