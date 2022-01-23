@@ -23,6 +23,7 @@ jobs:
         shell: bash
         run: |
           echo 'APP_ENV=test' > .env
+          echo NEXT_PUBLIC_API_KEY=${{ secrets.NEXT_PUBLIC_API_KEY }} >> .env
 
       - name: Install package
         run: npm install
