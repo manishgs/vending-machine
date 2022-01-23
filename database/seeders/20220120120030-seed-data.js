@@ -1,19 +1,19 @@
 module.exports = {
   up: async (queryInterface) => {
     await queryInterface.bulkInsert('products', [{
-      name: 'coke',
+      name: 'Coke',
       price:20,
       createdAt: new Date(),
       updatedAt: new Date(),
     },
     {
-      name: 'pepsi',
+      name: 'Pepsi',
       price:25,
       createdAt: new Date(),
       updatedAt: new Date(),
     },
     {
-      name: 'dew',
+      name: 'Dew',
       price:30,
       createdAt: new Date(),
       updatedAt: new Date(),

@@ -6,7 +6,11 @@ import Amount from '../../src/libs/amount';
 import PurchaseTransaction from '../../src/libs/transaction/purchase';
 import ProductRepository from '../../src/repository/product';
 
-describe.only('Transaction', () => {
+describe('Transaction', () => {
+  before(async () => {
+    await VendingMachineRepository.update({ amount: { 1: 100 } }, { where: { id: 1 } });
+  });
+
   it('price less than recieved amount', async () => {
     const product = (await ProductRepository.findById(1)) as Product;
     const amount = new Amount({ 1: 10 });
